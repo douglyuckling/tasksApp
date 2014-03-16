@@ -3,7 +3,7 @@
 <head>
     <title>Tasks App</title>
 
-    <script data-main="scripts/main" src="scripts/require.js"></script>
+    <script data-main="js/app" src="js/lib/require.js"></script>
 </head>
 <body></body>
 </html>
