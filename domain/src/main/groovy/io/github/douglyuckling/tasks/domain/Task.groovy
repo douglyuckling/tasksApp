@@ -1,7 +1,9 @@
 package io.github.douglyuckling.tasks.domain
 
 import groovy.transform.EqualsAndHashCode
+import org.springframework.data.mongodb.core.mapping.Document
 
+@Document(collection='tasks')
 @EqualsAndHashCode(includes = 'id')
 class Task {
     String id
@@ -13,21 +15,6 @@ class Task {
     // Jackson gets confused when there are two auto-generated getters.
     boolean getComplete() {
         return complete
-    }
-
-    void ensureId() {
-        if (!id) {
-            setId(UUID.randomUUID().toString())
-        }
-    }
-
-    String getId() {
-        ensureId()
-        return id
-    }
-
-    private setId(String newId) {
-        id = newId
     }
 
 }
