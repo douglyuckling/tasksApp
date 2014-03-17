@@ -20,8 +20,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12">
-            <ul id="tasks_list" class="list-group"></ul>
+        <div class="col-lg-12" id="tasks_list">
         </div>
     </div>
 </div>

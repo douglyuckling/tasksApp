@@ -1,18 +1,20 @@
-define(['d3',
-        'jquery',
-        'backbone'],
-function(d3,
-         $,
-         Backbone) {
+define(['jquery',
+        'backbone',
+        'app/TasksView'],
+function($,
+         Backbone,
+         TasksView) {
     "use strict";
 
     var tasks = new Backbone.Collection;
     tasks.url = '/data/tasks/';
-    tasks.fetch({
-        success: function() {
-            renderTasks();
-        }
+    tasks.fetch();
+
+    var tasksView = new TasksView({
+        collection: tasks
     });
+
+    $('#tasks_list').append(tasksView.render().el);
 
     $('#add_task_btn').click(function() {
         addTask();
@@ -26,7 +28,6 @@ function(d3,
     function addTask() {
         var taskData = collectNewTaskFormData();
         tasks.add([taskData]);
-        renderTasks();
         clearNewTaskForm();
     }
 
@@ -38,18 +39,6 @@ function(d3,
 
     function clearNewTaskForm() {
         $('#add_task_summary_text').val('');
-    }
-
-    function renderTasks() {
-        var tasksSelection = d3.select('#tasks_list').selectAll('ul').data(tasks.toArray(), function(d) {return d.id || d.cid;});
-
-        tasksSelection.enter()
-            .append('ul')
-            .attr('class', 'list-group-item');
-        tasksSelection.exit()
-            .remove();
-        tasksSelection
-            .text(function(d) { return d.get('summary'); });
     }
 
 });
