@@ -1,8 +1,10 @@
 define(['jquery',
         'backbone',
+        'app/NewTaskView',
         'app/TasksView'],
 function($,
          Backbone,
+         NewTaskView,
          TasksView) {
     "use strict";
 
@@ -10,35 +12,19 @@ function($,
     tasks.url = '/data/tasks/';
     tasks.fetch();
 
+    var newTaskView = new NewTaskView({
+        el: $('#new_task_form')
+    });
     var tasksView = new TasksView({
         collection: tasks
     });
 
-    $('#tasks_list').append(tasksView.render().el);
-
-    $('#add_task_btn').click(function() {
-        addTask();
-    });
-    $('#add_task_summary_text').keypress(function(event) {
-        if (event.which == 13) {
-            addTask();
-        }
-    });
-
-    function addTask() {
-        var taskData = collectNewTaskFormData();
+    newTaskView.on('newTask', function(taskData) {
         tasks.add([taskData]);
-        clearNewTaskForm();
-    }
+        newTaskView.clearForm();
+    });
 
-    function collectNewTaskFormData() {
-        return {
-            summary: $('#add_task_summary_text').val()
-        }
-    }
-
-    function clearNewTaskForm() {
-        $('#add_task_summary_text').val('');
-    }
+    newTaskView.render();
+    $('#tasks_list').html(tasksView.render().el);
 
 });
